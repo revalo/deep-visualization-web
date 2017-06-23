@@ -1,0 +1,9 @@
+.webcam-feature {
+	display: none;
+}
+
+.results-container {
+	width: 227;
+	font-size: 1.2em;
+	white-space: pre-line;
+}

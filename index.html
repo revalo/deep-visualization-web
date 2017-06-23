@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Deep Vis</title>
+
+	<link rel="stylesheet" href="/css/main.css">
+
+	<!-- Libraries -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+	<script src="/dist/keras.js"></script>
+</head>
+<body>
+	<p class="webcam-feature">This app needs a browser that supports live webcam input.</p>
+	<p class="loading-indicator">Loading Stuff.</p>
+	<canvas id="canvas" width="227" height="227"></canvas>
+	<video id="canvas"></video>
+
+	<div class="results-container">
+	</div>
+
+	<script src="/js/imagenet.js"></script>
+	<script src="/js/bundle.js"></script>
+</body>
+</html>
