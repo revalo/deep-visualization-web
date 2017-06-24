@@ -12,13 +12,22 @@
 	<script src="/dist/keras.js"></script>
 </head>
 <body>
-	<p class="webcam-feature">This app needs a browser that supports live webcam input.</p>
-	<p class="loading-indicator">Loading Stuff.</p>
-	<canvas id="canvas" width="227" height="227"></canvas>
-	<video id="canvas"></video>
+	<div class="left-bar">
+		<p class="webcam-feature">This app needs a browser that supports live webcam input.</p>
+		<p class="loading-indicator">Loading Stuff.</p>
+		<canvas id="canvas" width="227" height="227"></canvas>
 
-	<div class="results-container">
+		<div class="results-container"></div>
+
+		<video id="canvas"></video>
 	</div>
+	<div class="right-bar">
+		<div class="layer-selector-container">
+		</div>
+		<canvas id="vis-canvas">
+		</canvas>
+	</div>
+	
 
 	<script src="/js/imagenet.js"></script>
 	<script src="/js/bundle.js"></script>

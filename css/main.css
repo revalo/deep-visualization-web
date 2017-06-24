@@ -7,3 +7,29 @@
 	font-size: 1.2em;
 	white-space: pre-line;
 }
+
+body {
+	display: flex;
+}
+
+.left-bar {
+	width: 227px;
+	float: left;
+	display: flex;
+	flex-direction: column;
+}
+
+.right-bar {
+	width: 100%;
+	word-wrap: break-word;
+}
+
+.layer-selector-container {
+}
+
+.tab {
+	padding-right: 10px;
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+}

@@ -5,7 +5,26 @@ var flatten = _.flatten;
 
 var width = 227;
 var height = 227;
+var vis_layer = "";
+var vis_canvas = $("#vis-canvas");
 
+// const model = new KerasJS.Model({
+//     filepaths: {
+//         model: '/models/caffenet.json',
+//         weights: '/models/caffenet_weights.buf',
+//         metadata: '/models/caffenet_metadata.json'
+//     },
+//     gpu: true
+// });
+
+// const model = new KerasJS.Model({
+//     filepaths: {
+//         model: '/models/vgg16.json',
+//         weights: '/models/vgg16_weights.buf',
+//         metadata: '/models/vgg16_metadata.json'
+//     },
+//     gpu: true
+// });
 const model = new KerasJS.Model({
     filepaths: {
         model: 'https://transcranial.github.io/keras-js-demos-data/squeezenet_v1.1/squeezenet_v1.1.json',
@@ -16,9 +35,22 @@ const model = new KerasJS.Model({
 });
 
 $(document).ready(function() {
+    resizeCanvas();
+
     model.ready().then(function() {
         console.log('Model is ready.');
         $('.loading-indicator').hide();
+        for (let [name, layer] of model.modelLayersMap.entries()) {
+            var tab = $("<a>" + name + "</a>");
+            tab.addClass('tab');
+            tab.click(function() {
+                vis_layer = name;
+            });
+            $(".layer-selector-container").append(tab);
+            if (vis_layer == "") {
+                vis_layer = name;
+            }
+        }
         setupwebcam();
     });
 
@@ -115,8 +147,32 @@ $(document).ready(function() {
                         images
                     })
                 }
+
+                var c = document.getElementById("vis-canvas");
+                var ctx = c.getContext("2d");
+                var can_w = c.width;
+                var can_h = c.height;
+
+                // Clear
+                ctx.fillStyle="white";
+                ctx.fillRect(0,0,can_w,can_h);
+
+                var cur_x = 0;
+                var cur_y = 0;
+
                 for (let x of results) {
-                    if (x.name == 'conv10') console.log(x.images[0].width);
+                    if (x.name == vis_layer) {
+                        for (let image of x.images) {
+                            ctx.putImageData(image, cur_x, cur_y);
+                            if (cur_x + image.width > can_w) {
+                                cur_x = 0;
+                                cur_y += image.height;
+                            }
+                            else {
+                                cur_x += image.width;
+                            }
+                        }
+                    }
                 }
                 raf = requestAnimationFrame(loop);
             });
@@ -171,6 +227,8 @@ function mainWebcamLoop() {
     var inputData = {
         input_1: dataProcessedTensor.data
     }
+
+    console.log(dataProcessedTensor.data.length);
 
     return model.predict(inputData);
 
@@ -247,4 +305,11 @@ function imagenetClassesTopK(classProbabilities, k = 5) {
     return { id: probIndex[1], name: iClass, probability: probIndex[0] }
   })
   return topK
+}
+
+$(window).resize(resizeCanvas);
+
+function resizeCanvas() {
+    vis_canvas.attr('width', $('.right-bar').width());
+    vis_canvas.attr('height', $(window).height());
 }
